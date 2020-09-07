@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    command: pipenv run python manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
+    volumes:
+      - ./app/:/code/usr/src/app/
+    env_file:
+      - ./.env.local

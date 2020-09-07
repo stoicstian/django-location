@@ -1,0 +1,30 @@
+# pull official base image
+FROM python:3.8.5-alpine
+
+# Metadata info owner
+LABEL autor=sebastian email=gutierrezgsebastian@outlook.com
+
+# prevents python from writing pyc files to disc
+ENV PYTHONDONTWRITEBYTECODE 1
+# prevents python from buffering stdout and stderr
+ENV PYTHONUNBUFFERED 1
+
+# install psycopg2 dependencies
+RUN apk update \
+    && apk add postgresql-dev gcc python3-dev musl-dev
+
+
+# create workdir
+RUN mkdir -p /code/usr/src/app/
+WORKDIR /code/usr/src/app
+
+
+# install dependencies and pipenv packages
+RUN apk update && pip install --upgrade pip && pip install pipenv
+
+# copy project
+COPY ./app/Pipfile ./app/Pipfile.lock /code/usr/src/app/
+
+RUN pipenv install
+
+CMD ["ash"]
