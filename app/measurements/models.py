@@ -1,5 +1,5 @@
 from operator import mod
-from django.db import models
+from django.db import db, models
 from django.db.models import CharField
 
 
@@ -24,6 +24,14 @@ class Family(models.Model):
 
     nombre = models.CharField("nombre familia", max_length=20)
 
+    class Meta:
+        """Clase Meta."""
+
+        ordering = ["nombre"]
+        db_table = "familia_db"
+        verbose_name = "Familia"
+        verbose_name_plural = "Familias"
+
     def __str__(self) -> str:
         """Método string."""
         return self.nombre
@@ -32,11 +40,42 @@ class Family(models.Model):
 class Person(models.Model):
     """Clase persona."""
 
-    SexoType = models.TextChoices("Sexo", "Femenino Masculino")
-    nombre = models.CharField("nombre de la persona", max_length=30)
-    apellido = models.CharField("apellido de la persona", max_length=30)
-    familia = models.ForeignKey(Family, on_delete=models.CASCADE, null=True)
-    sexo = models.CharField(blank=True, choices=SexoType.choices, max_length=10)
+    class Meta:
+        """Clase Meta."""
+
+        pass
+
+    SexoType = models.TextChoices(
+        "Sexo",
+        "Femenino Masculino",
+    )
+
+    nombre = models.CharField(
+        "nombre de la persona",
+        max_length=30,
+    )
+
+    apellido = models.CharField(
+        "apellido de la persona",
+        max_length=30,
+    )
+
+    familia = models.ForeignKey(
+        Family,
+        on_delete=models.CASCADE,
+        null=True,
+    )
+
+    documento = models.IntegerField(
+        "cédula de ciudadanía",
+        default=0000000,
+    )
+
+    sexo = models.CharField(
+        blank=True,
+        choices=SexoType.choices,
+        max_length=10,
+    )
 
     def __str__(self) -> str:
         """Método string."""
