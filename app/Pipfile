@@ -11,6 +11,7 @@ bandit = "*"
 
 [packages]
 django = "~=3.1"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.8"
